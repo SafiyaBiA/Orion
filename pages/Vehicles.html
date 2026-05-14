@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Management</title>
+    
+    <!-- jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap for Modern Styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <!-- Google Maps API -->
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+
+    <!-- JavaScript -->
+    <script defer src="script1.js"></script>
+    
+    <style>
+        /* Hide the table section initially */
+        #vehiclesSection {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h2 class="text-center">🚛 Fleet Management Dashboard</h2>
+
+        <!-- Edit Button to Show Table -->
+        <div class="text-center mt-3">
+            <button id="editButton" class="btn btn-primary">✏️ Edit</button>
+        </div>
+
+        <!-- 🚛 Vehicles List Table (Initially Hidden) -->
+        <div id="vehiclesSection">
+            <div class="card p-3 mt-4 shadow">
+                <h4>Add New Vehicle</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" id="name" class="form-control" placeholder="Vehicle Name">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" id="capacity" class="form-control" placeholder="Capacity">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" id="mileage" class="form-control" placeholder="Mileage">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" id="loadedQuantity" class="form-control" placeholder="Loaded Quantity">
+                    </div>
+                    <div class="col-md-2">
+                        <select id="status" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 text-center mt-3">
+                        <button class="btn btn-success" onclick="addVehicle()">➕ Add Vehicle</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🚛 Vehicles List Table -->
+            <div class="card p-3 mt-4 shadow">
+                <h4>📋 Vehicles List</h4>
+                <table class="table table-bordered text-center mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Capacity</th>
+                            <th>Mileage</th>
+                            <th>Loaded</th>
+                            <th>Free Space</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vehicleTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 📍 Vehicle Location Map -->
+        <div class="card p-3 mt-4 shadow">
+            <h4>📍 Vehicle Locations</h4>
+            <div id="map" style="height: 400px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle visibility of the Vehicles Table when Edit button is clicked
+        document.getElementById("editButton").addEventListener("click", function() {
+            var section = document.getElementById("vehiclesSection");
+            if (section.style.display === "none") {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        });
+
+        // Dummy function for adding vehicles (Replace with actual function)
+        function addVehicle() {
+            alert("🚚 Vehicle Added! (Implement Backend Logic)");
+        }
+
+        // Dummy function to initialize Google Maps (Replace with actual function)
+        function initMap() {
+            console.log("Google Maps Initialized.");
+        }
+    </script>
+
+</body>
+</html>

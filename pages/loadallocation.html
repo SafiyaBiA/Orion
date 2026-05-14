@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <title>
+    ORION Load Allocation
+  </title>
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+  <!-- Nucleo Icons -->
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- Material Icons -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- jQuery for AJAX -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../assets/css/styles.css">
+
+</head>
+
+<body class="g-sidenav-show  bg-gray-100">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2  bg-white my-2"
+    id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+        aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand px-4 py-3 m-0" href="javascript:;">
+        <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img" width="26" height="26" alt="main_logo">
+        <span class="ms-1 text-sm text-dark font-weight-bold">ORION Fleet</span>
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0 mb-2">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/dashboard.html">
+            <i class="material-symbols-rounded opacity-5">dashboard</i>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/tables.html">
+            <i class="material-symbols-rounded opacity-5">local_shipping</i>
+            <span class="nav-link-text ms-1">Shipment Tracking</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active bg-gradient-dark text-white" href="../pages/loadallocation.html">
+            <i class="material-symbols-rounded opacity-5">inventory_2</i>
+            <span class="nav-link-text ms-1">Load Allocation</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/billing.html">
+            <i class="material-symbols-rounded opacity-5">receipt_long</i>
+            <span class="nav-link-text ms-1">Billing</span>
+          </a>
+        </li>
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/profile.html">
+            <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1">Profile</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/sign-in.html">
+            <i class="material-symbols-rounded opacity-5">login</i>
+            <span class="nav-link-text ms-1">Sign In</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+      <div class="mx-3">
+        <a class="btn bg-gradient-dark w-100" href="javascript:;" type="button">ORION Support</a>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur"
+      data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Load Allocation</li>
+          </ol>
+        </nav>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="p-4">
+                <header class="d-flex justify-content-between align-items-center pb-4 border-bottom">
+                  <h1 class="h4 font-weight-bold">Load Allocation</h1>
+                  <div class="text-center mt-3">
+                    <button id="editButton" class="btn btn-primary">✏️ Edit</button>
+                  </div>
+                </header>
+
+
+
+                <!-- 🚛 Vehicles List Table (Initially Hidden) -->
+                <div id="vehiclesSection" style="display:none;">
+                  <div class="card p-3 mt-4 shadow">
+                    <h4>Add New Vehicle</h4>
+                    <div class="row g-2">
+                      <div class="col-md-2">
+                        <input type="text" id="veh_id" class="form-control" placeholder="Vehicle ID (e.g. ORION005)">
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" id="veh_name" class="form-control" placeholder="Vehicle Name">
+                      </div>
+                      <div class="col-md-2">
+                        <input type="number" id="veh_capacity" class="form-control" placeholder="Capacity (kg)">
+                      </div>
+                      <div class="col-md-2">
+                        <input type="number" id="veh_volume" class="form-control" placeholder="Volume (m³)">
+                      </div>
+                      <div class="col-md-2">
+                        <select id="veh_status" class="form-select">
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                        </select>
+                      </div>
+                      <div class="col-md-1 text-center">
+                        <button class="btn btn-success w-100" onclick="addVehicle()">➕ Add</button>
+                      </div>
+                    </div>
+                    <div id="addVehicleMsg" class="mt-2"></div>
+                  </div>
+
+                  <!-- 🚛 Vehicles List Table -->
+                  <div class="card p-3 mt-4 shadow">
+                    <h4>📋 Vehicles List</h4>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center mt-3">
+                        <thead class="table-dark">
+                          <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Capacity (kg)</th>
+                            <th>Volume (m³)</th>
+                            <th>Loaded (kg)</th>
+                            <th>Free Space (kg)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="vehicleTable"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 📍 Vehicle Location Map -->
+
+              </div>
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  // Toggle visibility of the Vehicles Section when Edit button is clicked
+                  document.getElementById("editButton").addEventListener("click", function () {
+                    var section = document.getElementById("vehiclesSection");
+                    if (section.style.display === "none" || section.style.display === "") {
+                      section.style.display = "block";
+                      fetchVehicles();
+                      if (typeof fetchVehicleVisualizations === 'function') fetchVehicleVisualizations();
+                    } else {
+                      section.style.display = "none";
+                    }
+                  });
+                });
+
+                // Add a new vehicle
+                async function addVehicle() {
+                  let vehicle_id = document.getElementById("veh_id").value.trim();
+                  let name = document.getElementById("veh_name").value.trim();
+                  let weight_capacity = parseInt(document.getElementById("veh_capacity").value);
+                  let volume_capacity = parseInt(document.getElementById("veh_volume").value) || Math.floor(weight_capacity * 0.005);
+                  let status = document.getElementById("veh_status").value;
+                  let msgEl = document.getElementById("addVehicleMsg");
+
+                  if (!vehicle_id || !name || !weight_capacity) {
+                    msgEl.innerHTML = '<div class="alert alert-danger py-2">Vehicle ID, Name and Capacity are required.</div>';
+                    return;
+                  }
+
+                  try {
+                    let res = await fetch("http://localhost:3000/add_vehicle", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ vehicle_id, name, weight_capacity, volume_capacity, status })
+                    });
+                    let data = await res.json();
+                    if (res.ok) {
+                      msgEl.innerHTML = `<div class="alert alert-success py-2">${data.message}</div>`;
+                      document.getElementById("veh_id").value = "";
+                      document.getElementById("veh_name").value = "";
+                      document.getElementById("veh_capacity").value = "";
+                      document.getElementById("veh_volume").value = "";
+                      fetchVehicles();
+                      if (typeof fetchVehicleVisualizations === 'function') fetchVehicleVisualizations();
+                    } else {
+                      msgEl.innerHTML = `<div class="alert alert-danger py-2">${data.error}</div>`;
+                    }
+                  } catch (e) {
+                    msgEl.innerHTML = '<div class="alert alert-danger py-2">Network error: Could not reach the server.</div>';
+                  }
+                }
+
+                // Fetch and render vehicles table
+                async function fetchVehicles() {
+                  try {
+                    let res = await fetch("http://localhost:3000/api/vehicles");
+                    let data = await res.json();
+                    let tbody = document.getElementById("vehicleTable");
+                    tbody.innerHTML = "";
+                    if (data.vehicles.length === 0) {
+                      tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">No vehicles found.</td></tr>';
+                      return;
+                    }
+                    data.vehicles.forEach(v => {
+                      let freeSpaceWeight = v.weight_capacity - v.current_weight;
+                      let statusBadge = v.status === 'Active'
+                        ? '<span class="badge bg-success">Active</span>'
+                        : '<span class="badge bg-danger">Inactive</span>';
+                      tbody.innerHTML += `
+                                        <tr>
+                                            <td>${v.vehicle_id}</td>
+                                            <td>${v.name}</td>
+                                            <td>${v.weight_capacity.toLocaleString()} kg</td>
+                                            <td>${v.volume_capacity} m³</td>
+                                            <td>${v.current_weight.toLocaleString()} kg</td>
+                                            <td>${freeSpaceWeight.toLocaleString()} kg</td>
+                                            <td>${statusBadge}</td>
+                                            <td><button class="btn btn-sm btn-danger" onclick="deleteVehicle('${v.vehicle_id}')">&#128465; Delete</button></td>
+                                        </tr>
+                                    `;
+                    });
+                  } catch (e) { console.error("Error fetching vehicles:", e); }
+                }
+
+                // Delete a vehicle
+                async function deleteVehicle(id) {
+                  if (!confirm('Delete vehicle ' + id + '?')) return;
+                  try {
+                    await fetch("http://localhost:3000/delete_vehicle/" + encodeURIComponent(id), { method: "DELETE" });
+                    fetchVehicles();
+                    if (typeof fetchVehicleVisualizations === 'function') fetchVehicleVisualizations();
+                  } catch (e) { console.error("Error deleting vehicle:", e); }
+                }
+
+              </script>
+
+
+              <div class="row mt-4">
+                <div class="col-lg-8">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title text-dark">Vehicle Selection</h5>
+                      <div class="mb-3"></div>
+                      <input type="text" placeholder=" 🔍 Search Vehicles" class="border p-2 w-full rounded">
+                      <div class="mb-3"></div>
+                      <div class="list-group" id="vehicleSelectionList">
+                        <p class="text-muted">Loading vehicles...</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title text-dark">AI Recommendation</h5>
+                      <div class="alert alert-warning">⚠️ Warning: Current load exceeds vehicle capacity by 2 tons.
+                      </div>
+                      <p class="font-weight-bold">Suggested Vehicles:</p>
+                      <ul class="list-group mb-3">
+                        <li class="list-group-item">✔️ ORION0301 - 98% match</li>
+                        <div class="mb-2"></div>
+                        <li class="list-group-item">✔️ ORION0904 - 88% match</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+              <div class="card mt-4">
+                <div class="card-body">
+                  <h5 class="card-title text-dark">Load Allocation Execution</h5>
+
+                  <form id="allocationForm">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <input type="number" id="weight" class="form-control" placeholder="Load Weight (kg)" required>
+                      </div>
+                      <div class="col-md-3">
+                        <input type="number" id="volume" class="form-control" placeholder="Load Volume (m³)" required>
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" id="source" class="form-control" placeholder="Source Location" required>
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" id="destination" class="form-control" placeholder="Destination" required>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Allocate Load</button>
+                  </form>
+
+                  <div id="allocationResult" class="mt-4"></div>
+                </div>
+              </div>
+
+              <script>
+                document.getElementById("allocationForm").addEventListener("submit", async function (event) {
+                  event.preventDefault();
+
+                  let weight = parseInt(document.getElementById("weight").value);
+                  let volume = parseInt(document.getElementById("volume").value);
+                  let source = document.getElementById("source").value.trim();
+                  let destination = document.getElementById("destination").value.trim();
+                  let resultDiv = document.getElementById("allocationResult");
+
+                  resultDiv.innerHTML = "<h5 class='text-dark'>Processing Allocation...</h5>";
+
+                  try {
+                    let response = await fetch("http://localhost:3000/api/allocate", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({ weight, volume, source, destination })
+                    });
+
+                    let result = await response.json();
+
+                    resultDiv.innerHTML = "<h5 class='text-dark'>Allocation Result:</h5>";
+
+                    if (response.ok) {
+                      resultDiv.innerHTML += `
+                <p><strong>Vehicle ID:</strong> ${result.vehicle_id}</p>
+                <p><strong>Capacity:</strong> ${result.weight_capacity} kg, ${result.volume_capacity} m³</p>
+                <p><strong>Available After Allocation:</strong> ${result.available_weight} kg, ${result.available_volume} m³</p>
+                <p><strong>Status:</strong> ${result.status}</p>
+            `;
+                      if (typeof fetchVehicles === "function") fetchVehicles();
+                      fetchVehicleVisualizations(); // Update the UI visually too!
+                    } else {
+                      resultDiv.innerHTML += `<p class="text-danger">${result.error || "Allocation failed"}</p>`;
+                    }
+                  } catch (err) {
+                    resultDiv.innerHTML += `<p class="text-danger">Network Error: Could not reach the server.</p>`;
+                  }
+                });
+
+                // Dynamic Graphical Representation
+                async function fetchVehicleVisualizations() {
+                  try {
+                    let res = await fetch("http://localhost:3000/api/vehicles");
+                    let data = await res.json();
+
+                    let listGroup = document.getElementById("vehicleSelectionList");
+                    let vizList = document.getElementById("loadVisualizationList");
+
+                    listGroup.innerHTML = "";
+                    vizList.innerHTML = "";
+
+                    data.vehicles.forEach((v, index) => {
+                      let loadPercentage = v.weight_capacity > 0 ? Math.round((v.current_weight / v.weight_capacity) * 100) : 0;
+                      let statusColor = v.status === "Active" ? "success" : "danger";
+                      let progColor = loadPercentage > 80 ? "danger" : (loadPercentage > 40 ? "warning" : "success");
+                      let iconCode = index % 2 === 0 ? "local_shipping" : "rv_hookup";
+
+                      // Add to Selection List
+                      listGroup.innerHTML += `
+                <div class="list-group-item d-flex align-items-center border rounded mb-3">
+                    <div class="d-flex align-items-center justify-content-center bg-dark text-white rounded me-3" style="width: 100px; height: 75px;">
+                        <i class="material-symbols-rounded" style="font-size: 40px;">${iconCode}</i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="font-weight-bold mb-1 text-dark">${v.vehicle_id} - ${v.name}</p>
+                                <p class="text-muted mb-1">Capacity: ${v.weight_capacity} kg</p>
+                                <p class="text-muted mb-0">Loaded: ${v.current_weight} kg</p>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center border border-${statusColor} text-${statusColor} font-weight-bold" style="width: 100px; height: 30px;">${v.status}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                      // Add to Load Visualization
+                      vizList.innerHTML += `
+                <div class="w-100 me-3 mb-2">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>${v.vehicle_id}</span>
+                        <span>${loadPercentage}%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-${progColor}" role="progressbar" style="width: ${loadPercentage}%"></div>
+                    </div>
+                </div>
+            `;
+                    });
+                  } catch (e) {
+                    console.error("Error fetching vehicles for visualization", e);
+                  }
+                }
+
+                // Call on load
+                document.addEventListener("DOMContentLoaded", fetchVehicleVisualizations);
+              </script>
+
+              <div class="col-lg-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-dark">Route & Cost Estimation</h5>
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0 text-muted">Distance:</p>
+                      <p class="mb-0">1,334 km</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0 text-muted">ETA:</p>
+                      <p class="mb-0">5h 15m</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0 text-muted">Fuel Cost:</p>
+                      <p class="mb-0">₹49,350</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0 text-muted">Toll Charges:</p>
+                      <p class="mb-0">₹14,506</p>
+                    </div>
+                    <div class="d-flex justify-content-between font-weight-bold mt-2">
+                      <p>Total Estimated Cost:</p>
+                      <p class="text-warning">₹63,856</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mt-4">
+              <div class="card-body">
+                <h5 class="card-title text-dark">Load Visualization</h5>
+                <div class="d-flex flex-wrap" id="loadVisualizationList">
+                  <p class="text-muted">Loading visualization...</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-secondary">Download Report</button>
+              <button class="btn btn-primary">Confirm Allocation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <footer class="footer py-4  ">
+      <div class="container-fluid">
+        <div class="row align-items-center justify-content-lg-between">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="copyright text-center text-sm text-muted text-lg-start">
+              ©
+              <script>
+                document.write(new Date().getFullYear())
+              </script>,
+              made with <i class="fa fa-heart"></i> by
+              <a href=" " class="font-weight-bold" target="_blank">ORION</a>
+              for a better web.
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+              <li class="nav-item">
+                <a href=" " class="nav-link text-muted" target="_blank">ORION</a>
+              </li>
+              <li class="nav-item">
+                <a href=" " class="nav-link text-muted" target="_blank">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a href=" " class="nav-link text-muted" target="_blank">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a href=" " class="nav-link pe-0 text-muted" target="_blank">License</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    </div>
+  </main>
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+</body>
+
+</html>

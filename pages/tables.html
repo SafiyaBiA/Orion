@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <!-- Leaflet for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <title>
+    ORION Shipment Tracking
+  </title>
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+  <!-- Nucleo Icons -->
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- Material Icons -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    #map {
+      width: 100%;
+      height: 450px;
+      border-radius: 12px;
+    }
+  </style>
+
+</head>
+
+<body class="g-sidenav-show  bg-gray-100">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2  bg-white my-2"
+    id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+        aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand px-4 py-3 m-0" href="javascript:;">
+        <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img" width="26" height="26" alt="main_logo">
+        <span class="ms-1 text-sm text-dark font-weight-bold">ORION Fleet</span>
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/dashboard.html">
+            <i class="material-symbols-rounded opacity-5">dashboard</i>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active bg-gradient-dark text-white" href="../pages/tables.html">
+            <i class="material-symbols-rounded opacity-5">local_shipping</i>
+            <span class="nav-link-text ms-1">Shipment Tracking</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/loadallocation.html">
+            <i class="material-symbols-rounded opacity-5">inventory_2</i>
+            <span class="nav-link-text ms-1">Load Allocation</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/billing.html">
+            <i class="material-symbols-rounded opacity-5">receipt_long</i>
+            <span class="nav-link-text ms-1">Billing</span>
+          </a>
+        </li>
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/profile.html">
+            <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1">Profile</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="../pages/sign-in.html">
+            <i class="material-symbols-rounded opacity-5">login</i>
+            <span class="nav-link-text ms-1">Sign In</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+      <div class="mx-3">
+        <a class="btn bg-gradient-dark w-100" href="javascript:;" type="button">ORION Support</a>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur"
+      data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Shipment Tracking</li>
+          </ol>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+              <label class="form-label">Type here...</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+          <ul class="navbar-nav d-flex align-items-center  justify-content-end">
+            <li class="nav-item d-flex align-items-center">
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href=" ">Order Check</a>
+            </li>
+
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0">
+                <i class="material-symbols-rounded fixed-plugin-button-nav">settings</i>
+              </a>
+            </li>
+            <li class="nav-item dropdown pe-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="material-symbols-rounded">notifications</i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New message</span> from Driver1
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          13 minutes ago
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <img src="../assets/img/team-3.jpg" class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">New album</span> by Driver2
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          1 day
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-radius-md" href="javascript:;">
+                    <div class="d-flex py-1">
+                      <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
+                          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                          <title>credit-card</title>
+                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                              <g transform="translate(1716.000000, 291.000000)">
+                                <g transform="translate(453.000000, 454.000000)">
+                                  <path class="color-background"
+                                    d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
+                                    opacity="0.593633743"></path>
+                                  <path class="color-background"
+                                    d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z">
+                                  </path>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          Payment successfully completed
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1"></i>
+                          2 days
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item d-flex align-items-center">
+              <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
+                <i class="material-symbols-rounded">account_circle</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+
+      <!-- 📦 Section 1: Place a New Order -->
+      <div class="row justify-content-center mb-5">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow-lg border-0">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-capitalize ps-3"><i
+                    class="material-symbols-rounded me-2">add_shopping_cart</i>Place a New Order</h6>
+              </div>
+            </div>
+            <div class="card-body pt-4">
+              <form id="orderForm" class="px-2">
+                <div class="input-group input-group-outline mb-3">
+                  <label class="form-label">Order ID (e.g. ORD-101)</label>
+                  <input type="text" id="orderID" class="form-control" required>
+                </div>
+                <div class="input-group input-group-outline mb-3">
+                  <label class="form-label">Delivery Address</label>
+                  <input type="text" id="address" class="form-control" required>
+                </div>
+                <div class="input-group input-group-outline mb-3">
+                  <label class="form-label">Quantity</label>
+                  <input type="number" id="quantity" class="form-control" min="1" required>
+                </div>
+                <button type="submit" class="btn bg-gradient-primary w-100 mt-2 mb-0">
+                  <i class="material-symbols-rounded me-2">send</i>Submit Order
+                </button>
+                <div id="orderMsg" class="mt-3 text-center"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🚚 Section 2: Shipment Tracking & History -->
+      <div class="row mb-5">
+        <div class="col-12">
+          <div class="card shadow-lg border-0">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div
+                class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+                <h6 class="text-white text-capitalize ps-3 mb-0"><i
+                    class="material-symbols-rounded me-2">local_shipping</i>Shipment Tracking & History</h6>
+                <div class="pe-3">
+                  <span class="badge badge-sm bg-gradient-info">Live Updates</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <!-- Filters Bar -->
+              <div
+                class="d-flex flex-wrap gap-3 px-4 py-3 border-bottom align-items-center bg-gray-100 border-radius-lg mx-3 mt-3">
+                <div class="input-group input-group-outline flex-grow-1" style="max-width: 300px;">
+                  <label class="form-label">Search Order ID...</label>
+                  <input type="text" id="searchInput" class="form-control">
+                </div>
+                <div class="input-group input-group-outline" style="max-width: 200px;">
+                  <select id="statusFilter" class="form-control">
+                    <option value="All">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
+                </div>
+                <button class="btn btn-outline-dark btn-sm mb-0 ms-auto" onclick="loadOrders()">
+                  <i class="material-symbols-rounded text-sm me-1">refresh</i>Sync
+                </button>
+              </div>
+
+              <div class="table-responsive p-0">
+                <table id="orderTable" class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Order Info</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Destination
+                      </th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Qty</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status
+                      </th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        Timeline</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="orderTableBody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        // --- Place Order Logic ---
+        document.getElementById("orderForm").addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const orderID = document.getElementById("orderID").value.trim();
+          const address = document.getElementById("address").value.trim();
+          const quantity = parseInt(document.getElementById("quantity").value);
+          const msgEl = document.getElementById("orderMsg");
+
+          try {
+            const res = await fetch("http://localhost:3000/add_order", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ order_id: orderID, address, quantity, status: "Pending" })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              msgEl.innerHTML = `<span class="text-success text-sm font-weight-bold"><i class="material-symbols-rounded text-sm me-1">check_circle</i> ${data.message}</span>`;
+              document.getElementById("orderForm").reset();
+              loadOrders();
+            } else {
+              msgEl.innerHTML = `<span class="text-danger text-sm font-weight-bold"><i class="material-symbols-rounded text-sm me-1">error</i> ${data.error}</span>`;
+            }
+          } catch (err) {
+            msgEl.innerHTML = `<span class="text-danger text-sm font-weight-bold">Server Error. Please try again.</span>`;
+          }
+        });
+
+        // --- Order Management ---
+        async function loadOrders() {
+          try {
+            const res = await fetch("http://localhost:3000/api/orders");
+            const data = await res.json();
+            window._allOrders = data.orders || [];
+            renderOrders();
+          } catch (e) { console.error("Sync Error:", e); }
+        }
+
+        function renderOrders() {
+          const filter = document.getElementById("statusFilter").value;
+          const search = document.getElementById("searchInput").value.toLowerCase();
+          const tbody = document.getElementById("orderTableBody");
+          tbody.innerHTML = "";
+
+          const filtered = (window._allOrders || []).filter(o => {
+            const matchStatus = filter === "All" || o.status === filter;
+            const matchSearch = o.order_id.toLowerCase().includes(search) || (o.address && o.address.toLowerCase().includes(search));
+            return matchStatus && matchSearch;
+          });
+
+          if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-5 text-secondary">No matching shipments found.</td></tr>';
+            return;
+          }
+
+          filtered.forEach(o => {
+            const status = o.status || "Pending";
+            let badgeColor = "bg-gradient-secondary";
+            if (status === "Delivered") badgeColor = "bg-gradient-success";
+            if (status === "Shipped") badgeColor = "bg-gradient-info";
+            if (status === "Processing") badgeColor = "bg-gradient-warning";
+
+            const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) : "—";
+
+            tbody.innerHTML += `
+              <tr class="border-bottom">
+                <td>
+                  <div class="d-flex px-3 py-1">
+                    <div class="icon icon-shape icon-sm bg-gradient-dark shadow text-center border-radius-md me-3">
+                      <i class="material-symbols-rounded opacity-10" style="font-size: 14px;">inventory_2</i>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-sm font-weight-bold">${o.order_id}</h6>
+                      <p class="text-xs text-secondary mb-0">Carrier: ORION Fleet</p>
+                    </div>
+                  </div>
+                </td>
+                <td><p class="text-xs font-weight-bold mb-0">${o.address || "—"}</p></td>
+                <td><p class="text-xs font-weight-bold mb-0">${o.quantity}</p></td>
+                <td class="align-middle text-center">
+                  <span class="badge badge-sm ${badgeColor}">${status}</span>
+                </td>
+                <td class="align-middle text-center">
+                  <span class="text-secondary text-xs font-weight-bold">${date}</span>
+                </td>
+                <td class="align-middle text-center">
+                  <div class="d-flex justify-content-center gap-2">
+                    <select class="form-select form-select-sm border-radius-md" style="width:110px; font-size: 11px;" onchange="updateStatus('${o.order_id}', this.value)">
+                      <option ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                      <option ${status === 'Processing' ? 'selected' : ''}>Processing</option>
+                      <option ${status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                      <option ${status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+            `;
+          });
+        }
+
+        async function updateStatus(id, status) {
+          try {
+            await fetch(`http://localhost:3000/update_order/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ status })
+            });
+            loadOrders();
+          } catch (e) { console.error("Update failed:", e); }
+        }
+
+        // Event Listeners
+        document.getElementById("searchInput").addEventListener("input", renderOrders);
+        document.getElementById("statusFilter").addEventListener("change", renderOrders);
+
+        // --- Map Initialization ---
+        let map;
+        function initMap() {
+          if (map) map.remove();
+          map = L.map('map').setView([20.5937, 78.9629], 5); // Center on India
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+          }).addTo(map);
+
+          // Add markers for orders if they have coordinates (or use random ones for demo)
+          const orders = window._allOrders || [];
+          orders.forEach((o, index) => {
+            // For demo: Generate consistent-looking random coords based on order ID if none provided
+            const lat = 12.9716 + (Math.sin(index) * 5);
+            const lng = 77.5946 + (Math.cos(index) * 5);
+
+            L.marker([lat, lng]).addTo(map)
+              .bindPopup(`<b>Order: ${o.order_id}</b><br>Status: ${o.status}<br>Address: ${o.address}`);
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          loadOrders().then(() => {
+            initMap();
+          });
+        });
+
+      </script>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow-lg border-0 mb-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div
+                class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+                <h6 class="text-white text-capitalize ps-3 mb-0"><i class="material-symbols-rounded me-2">map</i>Live
+                  Order Locations</h6>
+                <div class="pe-3">
+                  <button id="viewMapBtn" class="btn btn-white btn-sm mb-0">
+                    <i class="material-symbols-rounded text-sm me-1">open_in_new</i>Full View
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <div id="map" style="height: 450px; width: 100%; border-radius: 12px; border: 1px solid #eee;"></div>
+              <div class="mt-3 d-flex align-items-center">
+                <i class="material-symbols-rounded text-info me-2">info</i>
+                <p class="text-xs text-secondary mb-0">Real-time GPS tracking is enabled for all active shipments. Click
+                  "Full View" for an interactive heatmap.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        // Map Button Logic
+        document.getElementById("viewMapBtn").addEventListener("click", function () {
+          // Use current orders to generate markers if possible, or use fallback
+          let productLocations = (window._allOrders || []).map(o => ({
+            id: o.order_id,
+            lat: 12.9716 + (Math.random() - 0.5) * 5, // Randomly scattered for demo
+            lng: 77.5946 + (Math.random() - 0.5) * 5,
+            quantity: o.quantity
+          }));
+
+          // Fallback if no orders
+          if (productLocations.length === 0) {
+            productLocations = [
+              { id: "Order1", lat: 12.9716, lng: 77.5946, quantity: 10 },
+              { id: "Order2", lat: 28.7041, lng: 77.1025, quantity: 5 }
+            ];
+          }
+
+          let locationData = encodeURIComponent(JSON.stringify(productLocations));
+          window.open(`fullmap.html?data=${locationData}`, "_blank");
+        });
+      </script>
+
+
+
+      <footer class="footer py-4  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                made with <i class="fa fa-heart"></i> by
+                <a href=" " class="font-weight-bold" target="_blank">ORION</a>
+                for a better web.
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                <li class="nav-item">
+                  <a href=" " class="nav-link text-muted" target="_blank">ORION</a>
+                </li>
+                <li class="nav-item">
+                  <a href=" " class="nav-link text-muted" target="_blank">About Us</a>
+                </li>
+                <li class="nav-item">
+                  <a href=" " class="nav-link text-muted" target="_blank">Blog</a>
+                </li>
+                <li class="nav-item">
+                  <a href=" " class="nav-link pe-0 text-muted" target="_blank">License</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+  <div class="fixed-plugin">
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+      <i class="material-symbols-rounded py-2">settings</i>
+    </a>
+    <div class="card shadow-lg">
+      <div class="card-header pb-0 pt-3">
+        <div class="float-start">
+          <h5 class="mt-3 mb-0">ORION UI Configurator</h5>
+          <p>See our dashboard options.</p>
+        </div>
+        <div class="float-end mt-4">
+          <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
+            <i class="material-symbols-rounded">clear</i>
+          </button>
+        </div>
+        <!-- End Toggle Button -->
+      </div>
+      <hr class="horizontal dark my-1">
+      <div class="card-body pt-sm-3 pt-0">
+        <!-- Sidebar Backgrounds -->
+        <div>
+          <h6 class="mb-0">Sidebar Colors</h6>
+        </div>
+        <a href="javascript:void(0)" class="switch-trigger background-color">
+          <div class="badge-colors my-2 text-start">
+            <span class="badge filter bg-gradient-primary" data-color="primary" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-dark active" data-color="dark" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
+          </div>
+        </a>
+        <!-- Sidenav Type -->
+        <div class="mt-3">
+          <h6 class="mb-0">Sidenav Type</h6>
+          <p class="text-sm">Choose between different sidenav types.</p>
+        </div>
+        <div class="d-flex">
+          <button class="btn bg-gradient-dark px-3 mb-2" data-class="bg-gradient-dark"
+            onclick="sidebarType(this)">Dark</button>
+          <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent"
+            onclick="sidebarType(this)">Transparent</button>
+          <button class="btn bg-gradient-dark px-3 mb-2  active ms-2" data-class="bg-white"
+            onclick="sidebarType(this)">White</button>
+        </div>
+        <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
+        <!-- Navbar Fixed -->
+        <div class="mt-3 d-flex">
+          <h6 class="mb-0">Navbar Fixed</h6>
+          <div class="form-check form-switch ps-0 ms-auto my-auto">
+            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
+          </div>
+        </div>
+        <hr class="horizontal dark my-3">
+        <div class="mt-2 d-flex">
+          <h6 class="mb-0">Light / Dark</h6>
+          <div class="form-check form-switch ps-0 ms-auto my-auto">
+            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" onclick="darkMode(this)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+</body>
+
+</html>

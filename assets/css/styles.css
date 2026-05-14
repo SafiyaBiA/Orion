@@ -1,0 +1,11 @@
+/* ORION — Custom styles (light / white theme) */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+    .form-control {
+        margin-bottom: 10px;
+    }
+}
